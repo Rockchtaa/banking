@@ -12,15 +12,15 @@ const DoughnutChart = ({accounts}: DoughnutChartProps) => {
                 label : 'Banks',
                 data : [300, 50, 100],
                 backgroundColor : [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)'
+                    '#0747b6',
+                    '#2265d8',
+                    '#2f91fa',
                 ],
             }
         ],
         labels : ['Bank A', 'Bank B', 'Bank C'],
     };
-    return <Doughnut data={data}/>;
+    return <Doughnut data={data} options={{cutout: '60%', plugins: { legend: { display: false } }}}/>;
 }
 
 export default DoughnutChart;
