@@ -40,23 +40,23 @@ const RightSidebar = ({user, transactions, banks}: RightSidebarProps) => {
           </Link>
         </div>
 
-        {banks?.length > 0 && (
+        {true && (
           <div className="relative flex flex-1 flex-col items-center justify-center gap-5">
             <div className='relative z-10'>
-              <BankCard
-                key={banks[0].$id}
-                account={banks[0]}
-                userName={`${user.firstName} ${user.lastName}`}
-                showBalance={false}
-              />
+            <BankCard 
+                    key="test-id"
+                    userName="Yassine"
+                    showBalance={false}
+                    account={banks[1]}
+                />
             </div>
-            {banks[1] && (
+            {true && (
               <div className="absolute right-0 top-8 z-0 w-[90%]">
                 <BankCard 
-                  key={banks[1].$id}
-                  account={banks[1]}
-                  userName={`${user.firstName} ${user.lastName}`}
-                  showBalance={false}
+                    key="test-id"
+                    userName="Yassine"
+                    showBalance={false}
+                    account={banks[1]}
                 />
               </div>
             )}
