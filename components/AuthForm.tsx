@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { CustomFormField } from "@/components/CustomFormField";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   username: z.object({
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -85,11 +87,29 @@ const AuthForm = ({ type }: { type: string }) => {
                 type="password"
                 required={true}
               />
-              <Button type="submit" className="w-full">
-                {type === "sign-in" ? "Sign In" : "Sign Up"}
+              <div className="flex flex-col gap-4">
+              <Button type="submit" disabled={isLoading} className="form-btn">
+                {isLoading ? (<> <Loader2 className="animate-spin" /> &nbsp; Loading...</>) : type === "sign-in" ? "Sign In" : "Sign Up"}
               </Button>
+
+              </div>
+ 
             </form>
           </Form>
+          <footer className="flex justify-center gap-1">
+            <p className="text-16 font-normal text-gray-600">
+              {type === "sign-in"
+                ? "Don't have an account?"
+                : "Already have an account?"}
+            </p>
+            <Link
+              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              className="form-link"
+            >
+              {type === "sign-in" ? "Sign Up" : "Sign In"}
+            </Link>
+          </footer> 
+
         </>
       )}
     </section>
