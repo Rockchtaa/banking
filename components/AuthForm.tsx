@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Form } from "@/components/ui/form";
 import { CustomFormField } from "@/components/CustomFormField";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 
 const signInSchema = z.object({
   email: z
@@ -44,40 +45,54 @@ const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
   // Render different form based on type
   if (type === "sign-in") {
-    return <SignInForm isLoading={isLoading} setIsLoading={setIsLoading} />;
+    return (
+      <SignInForm
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        router={router}
+      />
+    );
   } else {
-    return <SignUpForm isLoading={isLoading} setIsLoading={setIsLoading} />;
+    return (
+      <SignUpForm
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        router={router}
+        setUser={setUser}
+      />
+    );
   }
 };
 
-const SignInForm = ({ 
-  isLoading, 
-  setIsLoading 
-}: { 
-  isLoading: boolean; 
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>> 
+const SignInForm = ({
+  isLoading,
+  setIsLoading,
+  router,
+}: {
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  router: any;
 }) => {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: { email: "", password: "" },
   });
 
-  async function onSubmit(values: z.infer<typeof signInSchema>) {
+  async function handleSubmit(formData: z.infer<typeof signInSchema>) {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      console.log(values);
-      // const newUser = await SignIn({
-      //   email: values.email,
-      //   password: values.password,
-      // });
-      // if (newUser) router.push("/");
-    
-      setIsLoading(false);
+      const user = await signIn({
+        email: formData.email,
+        password: formData.password,
+      });
+      if (user) {
+        router.push("/");
+      }
     } catch (error) {
       console.error("Sign-in error:", error);
+    } finally {
       setIsLoading(false);
     }
   }
@@ -107,7 +122,8 @@ const SignInForm = ({
       </header>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+          {" "}
           <CustomFormField
             form={form}
             name="email"
@@ -147,12 +163,16 @@ const SignInForm = ({
   );
 };
 
-const SignUpForm = ({ 
-  isLoading, 
-  setIsLoading 
-}: { 
-  isLoading: boolean; 
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>> 
+const SignUpForm = ({
+  isLoading,
+  setIsLoading,
+  setUser,
+  router,
+}: {
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setUser: React.Dispatch<React.SetStateAction<any>>;
+  router: any;
 }) => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -173,12 +193,26 @@ const SignUpForm = ({
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
     try {
       setIsLoading(true);
-      console.log(values);
-      // Sign-up l 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setIsLoading(false);
+
+      const signUpData: SignUpParams = {
+        email: values.email,
+        password: values.password,
+        firstName: values.firstName!,
+        lastName: values.lastName!,
+        address1: values.address!,
+        city: values.city!,
+        state: values.state!,
+        postalCode: values.postalCode!,
+        dateOfBirth: values.dateOfBirth!,
+        ssn: values.ssn!,
+      };
+
+      const newUser = await signUp(signUpData);
+      setUser(newUser);
     } catch (error) {
       console.error("Sign-up error:", error);
+      setIsLoading(false);
+    } finally {
       setIsLoading(false);
     }
   }
