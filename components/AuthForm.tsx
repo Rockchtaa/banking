@@ -11,7 +11,7 @@ import { Form } from "@/components/ui/form";
 import { CustomFormField } from "@/components/CustomFormField";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { signIn, signUp } from "@/lib/actions/user.actions";
+import { getLoggedInUser, signIn, signUp } from "@/lib/actions/user.actions";
 
 const signInSchema = z.object({
   email: z
