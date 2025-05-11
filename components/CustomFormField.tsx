@@ -1,51 +1,36 @@
-"use client";
+import React from 'react'
+import { FormControl, FormField, FormLabel, FormMessage } from './ui/form'
+import { Input } from './ui/input'
 
-import React from "react";
-import {
-  FormControl,
-  FormField as UIFormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
+import { Control, FieldPath } from 'react-hook-form'
+import { z } from 'zod'
+import { authFormSchema } from '@/lib/utils'
 
-interface CustomFormFieldProps {
-  form: UseFormReturn<any>;
-  name: string;
-  label: string;
-  placeholder?: string;
-  type?: string;
-  required?: boolean;
+const formSchema = authFormSchema('sign-up')
+
+interface CustomInput {
+  control: Control<z.infer<typeof formSchema>>,
+  name: FieldPath<z.infer<typeof formSchema>>,
+  label: string,
+  placeholder: string
 }
 
-export const CustomFormField = ({
-  form,
-  name,
-  label,
-  placeholder = `Enter your ${label.toLowerCase()}`,
-  type = "text",
-  required = false,
-}: CustomFormFieldProps) => {
-  const fieldId = `form-field-${name.replace(/\./g, '-')}`;
-  
+const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
   return (
-    <UIFormField
-      control={form.control}
+    <FormField
+      control={control}
       name={name}
       render={({ field }) => (
         <div className="form-item">
-          <FormLabel htmlFor={fieldId} className="form-label">
-            {label}{required && <span className="text-red-500 ml-1">*</span>}
+          <FormLabel className="form-label">
+            {label}
           </FormLabel>
           <div className="flex w-full flex-col">
             <FormControl>
-              <Input
-                id={fieldId}
-                type={type}
+              <Input 
                 placeholder={placeholder}
-                className="form-input"
+                className="input-class"
+                type={name === 'password' ? 'password' : 'text'}
                 {...field}
               />
             </FormControl>
@@ -54,5 +39,7 @@ export const CustomFormField = ({
         </div>
       )}
     />
-  );
-};
+  )
+}
+
+export default CustomInput
