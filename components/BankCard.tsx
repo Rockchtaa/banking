@@ -8,7 +8,6 @@ const BankCard = ({
   userName,
   showBalance = true,
 }: CreditCardProps) => {
-  console.log("BankCard rendered");
 
   return (
     <div className="flex flex-col">
@@ -17,7 +16,7 @@ const BankCard = ({
           <div>
             <h1 className="text-16 font-semibold text-white">{userName}</h1>
             <p className="font-ibm-plex-serif font-black text-white">
-              {formatAmount(account.currentBalance)}
+              {/* {formatAmount(account.currentBalance)} */}
             </p>
           </div>
           <article className="flex flex-col gap-2">
