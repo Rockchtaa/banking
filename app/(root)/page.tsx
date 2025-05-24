@@ -11,45 +11,43 @@ const Home = async ({ searchParams: { id, page }}: SearchParamProps ) => {
   const loggedIn = await getLoggedInUser();
   const accounts = await getAccounts({ userId: loggedIn?.$id });
   if(!accounts) return;
-  const accoountsData = accounts?.data;
-  const appwriteItemId = (id as string) || accoountsData[0]?.appwriteItemId;
+  const accountsData = accounts?.data;
+  const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
   const account = await getAccount({ appwriteItemId });
   // console.log({ accoountsData ,account });
   return (
+    <section className="home">
+      <div className="home-content">
+        <header className="home-header">
+          <HeaderBox 
+            type="greeting"
+            title="Welcome"
+            user={loggedIn?.firstName || 'Guest'}
+            subtext="Access and manage your account and transactions efficiently."
+          />
 
-    <>
-      <div className="home">
-        <div className="home-content">
-          <header className="home-header">
-            <HeaderBox
-              type="greeting"
-              title="Welcome"
-              user={loggedIn?.firstName || "guest"}
-              subtext="Acces and manage your account and transactions effectively"
-            />
-            <TotalBalanceBox
-              accounts={accoountsData}
-              totalBanks={accounts?.totalBanks}
-              totalCurrentBalance={accounts?.totalCurrentBalance}
-            />
-          </header>
-        </div>
+          <TotalBalanceBox 
+            accounts={accountsData}
+            totalBanks={accounts?.totalBanks}
+            totalCurrentBalance={accounts?.totalCurrentBalance}
+          />
+        </header>
 
-         <RecentTransactions
-          accounts={accoountsData}
+        <RecentTransactions 
+          accounts={accountsData}
           transactions={account?.transactions}
           appwriteItemId={appwriteItemId}
           page={1}
         />
-      
+      </div>
+
       <RightSidebar 
         user={loggedIn}
         transactions={account?.transactions}
-        banks={accoountsData?.slice(0, 2)}
+        banks={accountsData?.slice(0, 2)}
       />
-      </div>
-    </>
-  );
+    </section>
+  )
 };
 
 export default Home;
