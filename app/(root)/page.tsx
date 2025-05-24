@@ -35,12 +35,12 @@ const Home = async ({ searchParams: { id, page }}: SearchParamProps ) => {
           </header>
         </div>
 
-         {/* <RecentTransactions
-          accounts={accountsData}
+         <RecentTransactions
+          accounts={accoountsData}
           transactions={account?.transactions}
           appwriteItemId={appwriteItemId}
-          page={currentPage}
-        /> */}
+          page={1}
+        />
       
       <RightSidebar 
         user={loggedIn}
