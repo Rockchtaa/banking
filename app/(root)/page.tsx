@@ -33,12 +33,12 @@ const Home = async ({ searchParams: { id, page }}: SearchParamProps ) => {
           />
         </header>
 
-        <RecentTransactions 
+        {/* <RecentTransactions 
           accounts={accountsData}
           transactions={account?.transactions}
           appwriteItemId={appwriteItemId}
           page={1}
-        />
+        /> */}
       </div>
 
       <RightSidebar 
