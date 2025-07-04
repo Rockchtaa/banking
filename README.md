@@ -11,6 +11,7 @@ Banking Application
 🕸️ Code Snippets
 🔗 Assets
 
+
 🤖 Introduction
 Built with Next.js, this banking application is a financial SaaS platform that enables users to connect multiple bank accounts, view real-time transactions, transfer funds to other users, and manage their finances seamlessly.
 ⚙️ Tech Stack
