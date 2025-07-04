@@ -99,20 +99,20 @@ Set environment variables
 
 Create a .env file in the root of the project and populate it like this:
 
-env
-Kopieren
-Bearbeiten
+
+
+<details> <summary><strong>.env.example</strong></summary>
 # NEXT
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 # APPWRITE
 NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-NEXT_PUBLIC_APPWRITE_PROJECT=your_project_id
-APPWRITE_DATABASE_ID=your_db_id
-APPWRITE_USER_COLLECTION_ID=users
-APPWRITE_BANK_COLLECTION_ID=banks
-APPWRITE_TRANSACTION_COLLECTION_ID=transactions
-APPWRITE_SECRET=your_secret
+NEXT_PUBLIC_APPWRITE_PROJECT=
+APPWRITE_DATABASE_ID=
+APPWRITE_USER_COLLECTION_ID=
+APPWRITE_BANK_COLLECTION_ID=
+APPWRITE_TRANSACTION_COLLECTION_ID=
+APPWRITE_SECRET=
 
 # PLAID
 PLAID_CLIENT_ID=your_plaid_client_id
@@ -126,44 +126,8 @@ DWOLLA_KEY=your_dwolla_key
 DWOLLA_SECRET=your_dwolla_secret
 DWOLLA_BASE_URL=https://api-sandbox.dwolla.com
 DWOLLA_ENV=sandbox
-Run the application
 
-bash
-Kopieren
-Bearbeiten
-npm run dev
-Visit http://localhost:3000 to view the app.
-
-🕸️ Code Snippets
-🌐 .env.example
-env
-
-# NEXT
-NEXT_PUBLIC_SITE_URL=
-
-# APPWRITE
-NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-NEXT_PUBLIC_APPWRITE_PROJECT=
-APPWRITE_DATABASE_ID=
-APPWRITE_USER_COLLECTION_ID=
-APPWRITE_BANK_COLLECTION_ID=
-APPWRITE_TRANSACTION_COLLECTION_ID=
-APPWRITE_SECRET=
-
-# PLAID
-PLAID_CLIENT_ID=
-PLAID_SECRET=
-PLAID_ENV=sandbox
-PLAID_PRODUCTS=auth,transactions,identity
-PLAID_COUNTRY_CODES=US,CA
-
-# DWOLLA
-DWOLLA_KEY=
-DWOLLA_SECRET=
-DWOLLA_BASE_URL=https://api-sandbox.dwolla.com
-DWOLLA_ENV=sandbox
-🔁 exchangePublicToken.ts
-ts
+</details>
 
 export const exchangePublicToken = async ({
   publicToken,
