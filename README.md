@@ -1,36 +1,169 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Bank Application
 
-## Getting Started
+📋 Table of Contents
 
-First, run the development server:
+🤖 Introduction
+⚙️ Tech Stack
+🔋 Features
+🤸 Quick Start
+🕸️ Code Snippets
+🔗 Assets
 
-```bash
+🤖 Introduction
+Built with Next.js, this fintech application is a financial SaaS platform that enables users to connect multiple bank accounts, view real-time transactions, transfer funds to other users, and manage their finances seamlessly.
+⚙️ Tech Stack
+
+
+Next.js
+TypeScript
+Appwrite
+Plaid
+Dwolla
+React Hook Form
+Zod
+TailwindCSS
+Chart.js
+ShadCN
+
+🔋 Features
+
+Authentication: Secure server-side rendering (SSR) authentication with robust validations and authorization.
+Connect Banks: Integration with Plaid to link multiple bank accounts.
+Home Page: Displays an overview of user accounts, including total balance, recent transactions, and spending categorized by type.
+My Banks: Lists all connected bank accounts with detailed balance and account information.
+Transaction History: Supports pagination and filtering for viewing transaction history across different banks.
+Real-time Updates: Automatically updates relevant pages when new bank accounts are connected.
+Funds Transfer: Facilitates fund transfers to other accounts using Dwolla, with required fields and recipient bank ID.
+Responsiveness: Adapts seamlessly to various screen sizes and devices for a consistent user experience.
+
+Additional features include optimized code architecture and reusability.
+🤸 Quick Start
+Follow these steps to set up the project locally.
+Prerequisites
+Ensure the following are installed:
+
+Git
+Node.js
+npm
+
+Cloning the Repository
+git clone 
+cd banking
+
+Installation
+Install project dependencies:
+npm install
+
+Set Up Environment Variables
+Create a .env file in the project root and add the following:
+#NEXT
+NEXT_PUBLIC_SITE_URL=
+
+#APPWRITE
+NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+NEXT_PUBLIC_APPWRITE_PROJECT=
+APPWRITE_DATABASE_ID=
+APPWRITE_USER_COLLECTION_ID=
+APPWRITE_BANK_COLLECTION_ID=
+APPWRITE_TRANSACTION_COLLECTION_ID=
+APPWRITE_SECRET=
+
+#PLAID
+PLAID_CLIENT_ID=
+PLAID_SECRET=
+PLAID_ENV=
+PLAID_PRODUCTS=
+PLAID_COUNTRY_CODES=
+
+#DWOLLA
+DWOLLA_KEY=
+DWOLLA_SECRET=
+DWOLLA_BASE_URL=https://api-sandbox.dwolla.com
+DWOLLA_ENV=sandbox
+
+Replace placeholder values with your actual credentials from Appwrite, Plaid, and Dwolla.
+Running the Project
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser to view the project.
+🕸️ Code Snippets
+.env.example
+#NEXT
+NEXT_PUBLIC_SITE_URL=
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#APPWRITE
+NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+NEXT_PUBLIC_APPWRITE_PROJECT=
+APPWRITE_DATABASE_ID=
+APPWRITE_USER_COLLECTION_ID=
+APPWRITE_BANK_COLLECTION_ID=
+APPWRITE_TRANSACTION_COLLECTION_ID=
+APPWRITE_SECRET=
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#PLAID
+PLAID_CLIENT_ID=
+PLAID_SECRET=
+PLAID_ENV=sandbox
+PLAID_PRODUCTS=auth,transactions,identity
+PLAID_COUNTRY_CODES=US,CA
 
-## Learn More
+#DWOLLA
+DWOLLA_KEY=
+DWOLLA_SECRET=
+DWOLLA_BASE_URL=https://api-sandbox.dwolla.com
+DWOLLA_ENV=sandbox
 
-To learn more about Next.js, take a look at the following resources:
+exchangePublicToken.ts
+export const exchangePublicToken = async ({
+  publicToken,
+  user,
+}: exchangePublicTokenProps) => {
+  try {
+    const response = await plaidClient.itemPublicTokenExchange({
+      public_token: publicToken,
+    });
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    const accessToken = response.data.access_token;
+    const itemId = response.data.item_id;
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    const accountsResponse = await plaidClient.accountsGet({
+      access_token: accessToken,
+    });
 
-## Deploy on Vercel
+    const accountData = accountsResponse.data.accounts[0];
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    const request: ProcessorTokenCreateRequest = {
+      access_token: accessToken,
+      account_id: accountData.account_id,
+      processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
+    };
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    const processorTokenResponse = await plaidClient.processorTokenCreate(request);
+    const processorToken = processorTokenResponse.data.processor_token;
+
+    const fundingSourceUrl = await addFundingSource({
+      dwollaCustomerId: user.dwollaCustomerId,
+      processorToken,
+      bankName: accountData.name,
+    });
+
+    if (!fundingSourceUrl) throw Error;
+
+    await createBankAccount({
+      userId: user.$id,
+      bankId: itemId,
+      accountId: accountData.account_id,
+      accessToken,
+      fundingSourceUrl,
+      sharableId: encryptId(accountData.account_id),
+    });
+
+    revalidatePath("/");
+
+    return parseStringify({
+      publicTokenExchange: "complete",
+    });
+  } catch (error) {
+    console.error("An error occurred while exchanging token:", error);
+  }
+};
