@@ -277,3 +277,19 @@ export const getBank = async ({documentId}: getBankProps) => {
     console.log("An error occurred while getting the banks:", error);
   }
 }
+
+export const getBankByAccountId = async ({accountId}: getBankByAccountIdProps) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const bank = await database.listDocuments(
+      DATABASE_ID!,
+      BANK_COLLECTION_ID!,
+      [Query.equal("$id", accountId)]
+    );
+    if (bank.total !== 1) return null; // No bank found with the given accountId
+    return parseStringify(bank.documents[0]);
+  } catch (error) {
+    console.log("An error occurred while getting the banks:", error);
+  }
+}
