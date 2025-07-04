@@ -132,6 +132,7 @@ npm run dev
 NEXT_PUBLIC_SITE_URL=
 
 # APPWRITE
+# APPWRITE
 NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
 NEXT_PUBLIC_APPWRITE_PROJECT=
 APPWRITE_DATABASE_ID=
@@ -166,6 +167,10 @@ export const exchangePublicToken = async ({
   publicToken: string;
   user: User;
 }) => {
+}: {
+  publicToken: string;
+  user: User;
+}) => {
   try {
     const response = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
@@ -175,6 +180,7 @@ export const exchangePublicToken = async ({
 
     // Store accessToken securely (e.g., Appwrite DB)
   } catch (error) {
+    console.error("Token exchange failed:", error);
     console.error("Token exchange failed:", error);
   }
 };
