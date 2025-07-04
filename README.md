@@ -1,66 +1,96 @@
-Banking Application
+# 💰 Banking Application
 
+Eine moderne, vollständige Banking-SaaS-Plattform, gebaut mit **Next.js**, die es Nutzer:innen ermöglicht, Bankkonten zu verbinden, Transaktionen in Echtzeit zu sehen, Geld zu überweisen und ihre Finanzen effizient zu verwalten.
 
+---
 
-📋 Table of Contents
+## 📋 Table of Contents
 
-🤖 Introduction
-⚙️ Tech Stack
-🔋 Features
-🤸 Quick Start
-🕸️ Code Snippets
-🔗 Assets
+- [🤖 Introduction](#-introduction)  
+- [⚙️ Tech Stack](#-tech-stack)  
+- [🔋 Features](#-features)  
+- [🤸 Quick Start](#-quick-start)  
+- [🕸️ Code Snippets](#-code-snippets)  
+- [🔗 Assets](#-assets)
 
-🤖 Introduction
-Built with Next.js, this banking application is a financial SaaS platform that enables users to connect multiple bank accounts, view real-time transactions, transfer funds to other users, and manage their finances seamlessly.
-⚙️ Tech Stack
+---
 
-Next.js
-TypeScript
-Appwrite
-Plaid
-Dwolla
-React Hook Form
-Zod
-TailwindCSS
-Chart.js
-ShadCN
+## 🤖 Introduction
 
-🔋 Features
+Dieses Projekt ist eine Finanzplattform, die folgende Kernfunktionen bietet:
 
-Authentication: Secure server-side rendering (SSR) authentication with robust validations and authorization.
-Connect Banks: Integration with Plaid to link multiple bank accounts.
-Home Page: Displays an overview of user accounts, including total balance, recent transactions, and spending categorized by type.
-My Banks: Lists all connected bank accounts with detailed balance and account information.
-Transaction History: Supports pagination and filtering for viewing transaction history across different banks.
-Real-time Updates: Automatically updates relevant pages when new bank accounts are connected.
-Funds Transfer: Facilitates fund transfers to other accounts using Dwolla, with required fields and recipient bank ID.
-Responsiveness: Adapts seamlessly to various screen sizes and devices for a consistent user experience.
+- Verknüpfung mehrerer Bankkonten via **Plaid**
+- Realtime-Transaktionen
+- Geldüberweisungen via **Dwolla**
+- Benutzerfreundliches und responsives Design
 
-Additional features include optimized code architecture and reusability.
-🤸 Quick Start
-Follow these steps to set up the project locally.
-Prerequisites
-Ensure the following are installed:
+---
 
-Git
-Node.js
-npm
+## ⚙️ Tech Stack
 
-Cloning the Repository
+- **Next.js**
+- **TypeScript**
+- **Appwrite**
+- **Plaid**
+- **Dwolla**
+- **React Hook Form**
+- **Zod**
+- **TailwindCSS**
+- **Chart.js**
+- **ShadCN/UI**
+
+---
+
+## 🔋 Features
+
+- **🔐 Authentifizierung**  
+  Sichere SSR-basierte Authentifizierung mit Validierung und Autorisierung
+
+- **🏦 Bankverbindung**  
+  Mehrere Bankkonten via Plaid verbinden und verwalten
+
+- **📊 Dashboard**  
+  Übersicht über Kontostände, Transaktionen und Ausgaben nach Kategorie
+
+- **🏁 Transaktionsverlauf**  
+  Pagination, Filter und Übersicht über alle verknüpften Konten
+
+- **📡 Realtime Updates**  
+  Neue Bankverbindungen aktualisieren automatisch relevante Seiten
+
+- **💸 Geldüberweisung**  
+  Sichere Überweisungen mit Dwolla, inkl. Empfängerprüfung
+
+- **📱 Responsives UI**  
+  Optimiert für alle Geräte und Bildschirmgrößen
+
+---
+
+## 🤸 Quick Start
+
+### ✅ Voraussetzungen
+
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
+- [Git](https://git-scm.com/)
+
+### 🚀 Setup
+
+```bash
 git clone https://github.com/your-username/banking-app.git
 cd banking-app
-
-Installation
-Install project dependencies:
 npm install
+```
 
-Set Up Environment Variables
-Create a .env file in the project root and add the following:
-#NEXT
-NEXT_PUBLIC_SITE_URL=
+### 🔐 Umgebungsvariablen
 
-#APPWRITE
+Erstelle eine `.env`-Datei im Root-Verzeichnis:
+
+```env
+# NEXT
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# APPWRITE
 NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
 NEXT_PUBLIC_APPWRITE_PROJECT=
 APPWRITE_DATABASE_ID=
@@ -69,30 +99,39 @@ APPWRITE_BANK_COLLECTION_ID=
 APPWRITE_TRANSACTION_COLLECTION_ID=
 APPWRITE_SECRET=
 
-#PLAID
-PLAID_CLIENT_ID=
-PLAID_SECRET=
-PLAID_ENV=
-PLAID_PRODUCTS=
-PLAID_COUNTRY_CODES=
+# PLAID
+PLAID_CLIENT_ID=your_plaid_client_id
+PLAID_SECRET=your_plaid_secret
+PLAID_ENV=sandbox
+PLAID_PRODUCTS=auth,transactions,identity
+PLAID_COUNTRY_CODES=US,CA
 
-#DWOLLA
-DWOLLA_KEY=
-DWOLLA_SECRET=
+# DWOLLA
+DWOLLA_KEY=your_dwolla_key
+DWOLLA_SECRET=your_dwolla_secret
 DWOLLA_BASE_URL=https://api-sandbox.dwolla.com
 DWOLLA_ENV=sandbox
+```
 
-Replace placeholder values with your actual credentials from Appwrite, Plaid, and Dwolla.
-Running the Project
+### ▶️ Projekt starten
+
+```bash
 npm run dev
+```
 
-Open http://localhost:3000 in your browser to view the project.
-🕸️ Code Snippets
-.env.example
-#NEXT
+👉 Öffne [http://localhost:3000](http://localhost:3000) in deinem Browser.
+
+---
+
+## 🕸️ Code Snippets
+
+### `.env.example`
+
+```env
+# NEXT
 NEXT_PUBLIC_SITE_URL=
 
-#APPWRITE
+# APPWRITE
 NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
 NEXT_PUBLIC_APPWRITE_PROJECT=
 APPWRITE_DATABASE_ID=
@@ -101,70 +140,48 @@ APPWRITE_BANK_COLLECTION_ID=
 APPWRITE_TRANSACTION_COLLECTION_ID=
 APPWRITE_SECRET=
 
-#PLAID
+# PLAID
 PLAID_CLIENT_ID=
 PLAID_SECRET=
 PLAID_ENV=sandbox
 PLAID_PRODUCTS=auth,transactions,identity
 PLAID_COUNTRY_CODES=US,CA
 
-#DWOLLA
+# DWOLLA
 DWOLLA_KEY=
 DWOLLA_SECRET=
 DWOLLA_BASE_URL=https://api-sandbox.dwolla.com
 DWOLLA_ENV=sandbox
+```
 
-exchangePublicToken.ts
+---
+
+### `exchangePublicToken.ts`
+
+```ts
 export const exchangePublicToken = async ({
   publicToken,
   user,
-}: exchangePublicTokenProps) => {
+}: {
+  publicToken: string;
+  user: User;
+}) => {
   try {
     const response = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
     });
 
     const accessToken = response.data.access_token;
-    const itemId = response.data.item_id;
 
-    const accountsResponse = await plaidClient.accountsGet({
-      access_token: accessToken,
-    });
-
-    const accountData = accountsResponse.data.accounts[0];
-
-    const request: ProcessorTokenCreateRequest = {
-      access_token: accessToken,
-      account_id: accountData.account_id,
-      processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
-    };
-
-    const processorTokenResponse = await plaidClient.processorTokenCreate(request);
-    const processorToken = processorTokenResponse.data.processor_token;
-
-    const fundingSourceUrl = await addFundingSource({
-      dwollaCustomerId: user.dwollaCustomerId,
-      processorToken,
-      bankName: accountData.name,
-    });
-
-    if (!fundingSourceUrl) throw Error;
-
-    await createBankAccount({
-      userId: user.$id,
-      bankId: itemId,
-      accountId: accountData.account_id,
-      accessToken,
-      fundingSourceUrl,
-      sharableId: encryptId(accountData.account_id),
-    });
-
-    revalidatePath("/");
-
-    return parseStringify({
-      publicTokenExchange: "complete",
-    });
+    // Store accessToken securely (e.g., Appwrite DB)
   } catch (error) {
-    console.error("An error occurred while exchanging token:", error);
+    console.error("Token exchange failed:", error);
   }
 };
+```
+
+---
+
+
+
+---
